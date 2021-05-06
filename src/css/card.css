@@ -1,0 +1,74 @@
+.card {
+  list-style-type: none;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  word-wrap: anywhere;
+}
+
+.card-header h4 {
+  width: 100%;
+}
+
+.card-delete {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.card-delete span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.card-delete span:before, .card-delete span:after {
+  position: absolute;
+  left: 11px;
+  top: 2.5px;
+  content: ' ';
+  height: 19px;
+  width: 2px;
+  background-color: #a0a3b0;
+
+}
+
+.card-delete span:before {
+  transform: rotate(45deg);
+}
+
+.card-delete span:after {
+  transform: rotate(-45deg);
+}
+
+.card.dragged {
+  cursor: grabbing;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 999;
+  pointer-events: none;
+  background: #fff;
+  font-family: 'Roboto', sans-serif;
+  color: #1d345e;
+  /*transform: rotateZ(2deg);*/
+}
+
+.hidden {
+  display: none;
+}

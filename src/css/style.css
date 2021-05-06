@@ -1,3 +1,21 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #eaeae8;
+}
+
+h3, h4 {
+  margin: 0;
+  padding: 0;
+}
+
+ul[class] {
+  padding: 0;
+}
+
+
 #root {
+  padding-top: 50px;
   font-family: 'Roboto', sans-serif;
+  color: #1d345e;
 }
