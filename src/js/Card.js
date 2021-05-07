@@ -8,7 +8,7 @@ export default class Card {
       <li class="card" data-type="${type}" data-id="${id}">
         <div class="card-header">
           <h4>${title}</h4>
-          <button class="card-delete"><span></span></button>
+          <button class="card-delete hidden"><span></span></button>
         </div>
       </li>  
     `;

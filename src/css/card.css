@@ -14,7 +14,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
   word-wrap: anywhere;
+}
+
+.card-header h4 {
+  margin: 3px;
 }
 
 .card-header h4 {

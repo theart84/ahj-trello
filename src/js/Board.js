@@ -43,6 +43,27 @@ export default class Board {
   }
 
   registerEvents() {
+    const ulElements = document.querySelectorAll('ul');
+    const taskItems = this.container.querySelectorAll('.task-items');
+    const formAddCard = this.container.querySelectorAll('.add-task');
+    ulElements.forEach((element) => {
+      element.addEventListener('mouseover', (event) => {
+        if (event.target.tagName === 'LI') {
+          this.showDeleteButton(event);
+        }
+      });
+      element.addEventListener('mouseout', (event) => {
+        if (
+          event.relatedTarget.classList.contains('card-header') ||
+          event.relatedTarget.tagName === 'SPAN'
+        ) {
+          return;
+        }
+        if (event.target.tagName === 'LI') {
+          this.hideDeleteButton(event);
+        }
+      });
+    });
     this.container.addEventListener('mousedown', (event) => {
       const { target } = event;
       if (target.tagName === 'SPAN') {
@@ -54,7 +75,7 @@ export default class Board {
     });
     this.container.addEventListener('mouseup', (event) => this.onMouseUp(event));
     this.container.addEventListener('mousemove', (event) => this.onMouseMove(event));
-    this.taskItems.forEach((element) =>
+    taskItems.forEach((element) =>
       element.addEventListener('click', (event) => {
         const { target } = event;
         if (target.classList.contains('card-delete') || target.tagName === 'SPAN') {
@@ -62,8 +83,11 @@ export default class Board {
         }
       })
     );
-    this.formAddCard.forEach((element) =>
-      element.addEventListener('submit', (event) => this.createNewCard(event))
+    formAddCard.forEach((element) =>
+      element.addEventListener('submit', (event) => {
+        this.createNewCard(event);
+        this.onClickCloseAddCard(event);
+      })
     );
     const addNewCardButtonElement = this.boardContainer.querySelectorAll('.tasks-add-card button');
     const addTaskDeleteElement = this.boardContainer.querySelectorAll('.add-task-delete');
@@ -77,6 +101,7 @@ export default class Board {
 
   onMouseDown(event) {
     event.preventDefault();
+    document.body.style.cursor = 'grabbing';
     const currentElement = event.target.closest('li');
     this.cloneElement = currentElement.cloneNode(true);
     const { width, height, left, top } = currentElement.getBoundingClientRect();
@@ -97,27 +122,13 @@ export default class Board {
     if (!this.cloneElement) {
       return;
     }
-    const closest = document.elementFromPoint(event.clientX, event.clientY).closest('li');
-    if (closest) {
-      if (!closest.previousElementSibling?.classList.contains('template')) {
-      //   console.log(1)
-        const template = document.createElement('div');
-        template.className = 'template'
-        template.style.width = this.cloneElement.offsetWidth;
-        template.style.height = this.cloneElement.offsetHeight;
-        template.textContent = 'test'
-        template.style.backgroundColor = 'black'
-        const parentElement = closest.parentNode
-      console.log(parentElement)
-        parentElement.insertBefore(template, closest)
-      }
-    }
     this.cloneElement.style.left = `${event.pageX - this.coordX}px`;
     this.cloneElement.style.top = `${event.pageY - this.coordY}px`;
   }
 
   onMouseUp(event) {
     event.preventDefault();
+    document.body.style.cursor = 'default';
     if (!this.currentElement || !this.cloneElement) {
       return;
     }
@@ -137,18 +148,6 @@ export default class Board {
     this.currentElement.classList.remove('hidden');
     this.cloneElement.remove();
     this.cloneElement = null;
-  }
-
-  get tasksContainer() {
-    return this.container.querySelectorAll('.tasks-container');
-  }
-
-  get taskItems() {
-    return this.container.querySelectorAll('.task-items');
-  }
-
-  get formAddCard() {
-    return this.container.querySelectorAll('.add-task');
   }
 
   onClickAddNewCard(event) {
@@ -202,5 +201,15 @@ export default class Board {
       const newCard = new Card(cardContainer);
       newCard.createCard(card);
     });
+  }
+
+  showDeleteButton(event) {
+    const buttonElement = event.target.querySelector('button');
+    buttonElement.classList.remove('hidden');
+  }
+
+  hideDeleteButton(event) {
+    const buttonElement = event.target.querySelector('button');
+    buttonElement.classList.add('hidden');
   }
 }
